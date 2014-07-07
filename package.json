@@ -1,0 +1,27 @@
+{
+  "name": "tonight-tweets",
+  "version": "0.0.0",
+  "description": "tweets local events in dc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tonight",
+    "tweets",
+    "music",
+    "twitter"
+  ],
+  "author": "Tom MacWright",
+  "license": "ISC",
+  "dependencies": {
+    "twit": "~1.1.15",
+    "moment": "~2.7.0",
+    "aws-sdk": "~2.0.4",
+    "later": "~1.1.6"
+  },
+  "engines": {
+    "node": "0.10.29",
+    "npm": "1.3.x"
+  }
+}
