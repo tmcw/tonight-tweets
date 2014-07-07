@@ -3,7 +3,8 @@ var Twit = require('twit'),
     sourceMap = require('./').sourceMap,
     later = require('later'),
     argv = require('minimist')(process.argv.slice(2)),
-    AWS = require('aws-sdk');
+    AWS = require('aws-sdk'),
+    http = require('http');
 
 var T = new Twit({
     consumer_key: process.env.DCTN_TWITTER_CONSUMER_KEY,
@@ -67,3 +68,10 @@ if (argv.now) {
     var s = later.parse.recur().on('18:00:00').time();
     later.setInterval(run, s);
 }
+
+var server = http.createServer(function(req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('tonight-tweets worker.');
+});
+
+server.listen(process.env.PORT || 3000);
