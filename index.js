@@ -1,9 +1,10 @@
 var Twit = require('twit'),
     moment = require('moment'),
-    sourceMap = require('./').sourceMap,
+    sourceMap = require('tonight-sources').sourceMap,
     later = require('later'),
     argv = require('minimist')(process.argv.slice(2)),
     AWS = require('aws-sdk'),
+    debug = require('debug')('tonight-tweets'),
     http = require('http');
 
 var T = new Twit({
@@ -26,6 +27,7 @@ function todayStamp() {
 }
 
 function run() {
+    debug('get events');
     s3bucket.getObject({
         Key: todayStamp()
     }, function(err, data) {
@@ -36,33 +38,41 @@ function run() {
             console.error(e);
         }
         if (!parsed.length) return;
-        var titles = parsed.map(function(show) {
-            var formatted = '';
-            if (show.times && show.times.length) {
-              var firstTime = show.times[0];
-              var t = moment(firstTime.stamp).zone(0);
-              formatted = (t.minutes() ? t.format('h:mm') : t.format('h')) + ' ';
-            }
-            var twit = sourceMap[show.venue_id].properties.twitter;
-            if (twit) {
-                twit = ' @' + twit;
-            } else {
-                twit = ' /' + sourceMap[show.venue_id].properties.shortname;
-            }
-            return formatted + show.title + twit;
-        }).join(', ');
-        tweet('TNGHT: ' + titles);
+        debug(parsed.length + ' events');
+        try {
+            var titles = parsed.map(function(show) {
+                var formatted = '';
+                if (show.times && show.times.length) {
+                  var firstTime = show.times[0];
+                  var t = moment(firstTime.stamp).zone(0);
+                  formatted = (t.minutes() ? t.format('h:mm') : t.format('h')) + ' ';
+                }
+                var twit = sourceMap[show.venue_id].properties.twitter;
+                if (twit) {
+                    twit = ' @' + twit;
+                } else {
+                    twit = ' /' + sourceMap[show.venue_id].properties.shortname;
+                }
+                return formatted + show.title + twit;
+            }).join(', ');
+            var content = 'TNGHT: ' + titles;
+            debug('tweeting: ' + content);
+            tweet(content);
+        } catch(e) {
+            debug(e);
+        }
     });
 }
 
 function tweet(msg) {
     T.post('statuses/update', { status: msg }, function(err, data, response) {
         if (err) return console.error(err);
-        console.log('tweeted');
+        debug('tweeted');
     });
 }
 
 if (argv.now) {
+    debug('running now');
     run();
 } else {
     var s = later.parse.recur().on('18:00:00').time();
