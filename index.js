@@ -32,8 +32,9 @@ function run() {
         Key: todayStamp()
     }, function(err, data) {
         if (err) return;
+        var parsed = [];
         try {
-            var parsed = JSON.parse(data.Body);
+            parsed = JSON.parse(data.Body);
         } catch(e) {
             console.error(e);
         }
