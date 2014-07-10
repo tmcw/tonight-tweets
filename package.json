@@ -20,7 +20,8 @@
     "aws-sdk": "~2.0.4",
     "later": "~1.1.6",
     "minimist": "~0.2.0",
-    "debug": "~1.0.2"
+    "debug": "~1.0.2",
+    "tonight-sources": "0.0.0"
   },
   "engines": {
     "node": "0.10.29",
