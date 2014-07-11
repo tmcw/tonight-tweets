@@ -57,6 +57,11 @@ function run() {
                 return formatted + show.title + twit;
             }).join(', ');
             var content = 'TNGHT: ' + titles;
+            debug('prelim content: ' + content);
+            if (content.length > 140) {
+                debug('truncating content');
+                content = content.substring(0, 139) + '⋯';
+            }
             debug('tweeting: ' + content);
             tweet(content);
         } catch(e) {
