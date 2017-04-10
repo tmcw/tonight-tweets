@@ -15,12 +15,12 @@
   "author": "Tom MacWright",
   "license": "ISC",
   "dependencies": {
-    "twit": "~1.1.15",
-    "moment": "~2.7.0",
-    "aws-sdk": "~2.0.4",
-    "later": "~1.1.6",
-    "minimist": "~0.2.0",
-    "debug": "~1.0.2",
+    "twit": "~2.2.5",
+    "moment": "~2.18.1",
+    "aws-sdk": "~2.40.0",
+    "later": "~1.2.0",
+    "minimist": "~1.2.0",
+    "debug": "~2.6.3",
     "tonight-sources": "0.0.0"
   },
   "engines": {
